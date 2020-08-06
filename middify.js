@@ -11,13 +11,15 @@ const promise = Promise.resolve();
 
 const stringify = (r) => ({ ...r, body: JSON.stringify(r.body) });
 
+const maybeStringify = (d) => (typeof d === 'string' ? d : JSON.stringify(d));
+
 const onResponse = () => ({
   after: (handler, next) => {
     const { response } = handler;
     handler.response = {
       statusCode: response.statusCode || OK,
       headers: response.headers,
-      body: JSON.stringify(response.body || response),
+      body: maybeStringify(response.body || response),
     };
     next();
   },
