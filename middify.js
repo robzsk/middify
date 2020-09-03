@@ -2,6 +2,7 @@ const middy = require('middy');
 const { errors } = require('./statusCodes');
 const { OK } = require('http-status-codes');
 const {
+  httpHeaderNormalizer,
   httpEventNormalizer,
   jsonBodyParser,
   doNotWaitForEmptyEventLoop,
@@ -126,6 +127,7 @@ module.exports = (...middlewares) => {
     .use(doNotWaitForEmptyEventLoop())
     .use(onError())
     .use(httpEventNormalizer())
+    .use(httpHeaderNormalizer())
     .use(saveRawRequest())
     .use(jsonBodyParser())
     .use(cors({ headers: 'Authorization,content-type' }))
